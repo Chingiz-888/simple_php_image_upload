@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Drag & Drop Uploading</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/custom.css">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -10,93 +11,114 @@
 
 </head>
 <body>
-	<div id="uploads"></div>
-	<div class="dropzone" id="dropzone">
+
+ <div class="container col-md-8 col-md-offset-2" id="container1">
+    <div class="block">
+	 <div class="dropzone col-xs-12 col-md-6" id="dropzone">
 	     Drop files here to upload.  <br/><br/> Перетяните сюда файлы для загрузки на сервер
 	 </div>
-	 <br><br>
-	 <div id="result"></div>
+	 <div class="col-xs-12 col-md-6" id="form-block">
+           <form>
+			  <div class="form-group">
+			    <label for="exampleInputFile">Загрузка картинок</label>
+			    <input type="file" id="exampleInputFile">
+			    <br><br>
+			    <p class="help-block">Выберете графические файлы (PNG, JPEG, BMP) для загрузки и обработки на сервере</p>
+			    <br><br>
+			    <button type="submit" class="btn btn-default">Загрузить</button>
+			  </div>
+		   </form>
+	 </div>
+	 </div> <!-- /block-->
+</div><!-- /container1 -->
+<div class="container col-md-8 col-md-offset-2" id="container2">
+	<div id="result"></div>
+</div><!-- /container2 -->
+ 
 
-	<script>
-		(function() {
-			var hostname = "http://glens.me/test_images_upload/";
-
-
-			var dropzone = document.getElementById('dropzone');
-
-
-			//=== функция что занимается AJAX отправкой ========
-			var upload = function(files) {
-				var formData = new FormData(),
-					xhr = new XMLHttpRequest(),
-					x;
-
-				for (x=0; x<files.length; x++) {
-					formData.append('file[]', files[x]);
-				}
-
-				xhr.onload = function() {
-					//console.log(this.responseText);
-					var data = JSON.parse(this.responseText);
-					displayResult(data);
-				}
-
-				xhr.open('post', hostname+'upload.php');
-				xhr.send(formData);
-			}//===================================================
+<script>
+	(function() {
+		var hostname = "http://glens.me/test_images_upload/";
 
 
+		var dropzone = document.getElementById('dropzone');
 
-            //====блок работы с drag&drop зоной =================
-			dropzone.ondrop = function(e) {
-				//дефольное поведение браузера на ondrop - 
-				//это открыть этот дропнутый файл в новом окне
-				//нам это не нужно
-				e.preventDefault();
-				this.className = 'dropzone';
-				console.log(e.dataTransfer.files);
-				//теперь скармливаем файлы на отпарвку
-				upload(e.dataTransfer.files);
+
+		//=== функция что занимается AJAX отправкой ========
+		var upload = function(files) {
+			var formData = new FormData(),
+				xhr = new XMLHttpRequest(),
+				x;
+
+			for (x=0; x<files.length; x++) {
+				formData.append('file[]', files[x]);
 			}
 
-			dropzone.ondragover = function() {
-				this.className = 'dropzone dragover';
-				return false; //обязательно надо вернуть false
-			}                 //иначе косяк будет
-
-			dropzone.ondragleave = function() {
-				this.className = 'dropzone';
-				return false; //также false возвращаем, ибо надо
+			xhr.onload = function() {
+				//console.log(this.responseText);
+				var data = JSON.parse(this.responseText);
+				displayResult(data);
 			}
-			//==================================================
+
+			xhr.open('post', hostname+'upload.php');
+			xhr.send(formData);
+		}//===================================================
 
 
-			//====вставка результата============================
-			function displayResult(data){
-				var html = "";
-				if(data.result == '1') {
-					html += "<h3>Рисунки были успешно загружены</h3><br>";
-					for(var i=0; i<data.uploaded_images.length; i++){
-						//html += '<a href="' + data.uploaded_images[i].url +
-						//			'"'> +  data.uploaded_images[i].name + '</a><br>';
+
+        //====блок работы с drag&drop зоной =================
+		dropzone.ondrop = function(e) {
+			//дефольное поведение браузера на ondrop - 
+			//это открыть этот дропнутый файл в новом окне
+			//нам это не нужно
+			e.preventDefault();
+			this.className = 'dropzone';
+			console.log(e.dataTransfer.files);
+			//теперь скармливаем файлы на отпарвку
+			upload(e.dataTransfer.files);
+		}
+
+		dropzone.ondragover = function() {
+			this.className = 'dropzone dragover';
+			return false; //обязательно надо вернуть false
+		}                 //иначе косяк будет
+
+		dropzone.ondragleave = function() {
+			this.className = 'dropzone';
+			return false; //также false возвращаем, ибо надо
+		}
+		//==================================================
 
 
-						html += '<a href="' + data.uploaded_images[i].url + '">' + 
-						         data.uploaded_images[i].name  + '</a><br>';
-						alert(html);
+		//====вставка результата============================
+		function displayResult(data){
+			var html = "";
+			if(data.result == '1') {
+				html += "<h3>Рисунки были успешно загружены</h3><br>";
+				for(var i=0; i<data.uploaded_images.length; i++){
+					//html += '<a href="' + data.uploaded_images[i].url +
+					//			'"'> +  data.uploaded_images[i].name + '</a><br>';
 
-					}	
-					//html = data.uploaded_images[0].url;
-				} else {
-					html = "К сожалению, рисунки не были загружены<br>";
-					html += data.message;
-				}
-				$("#result").html(html);
+                    
+                    //создаем img вместе с ссылкой
+					html += '<a href="' + data.uploaded_images[i].url + '">' + 
+							'<img src="' + data.uploaded_images[i].url + '">' +
+					         data.uploaded_images[i].name  
+					 + '</a><br>';
+					alert(html);
+
+				}	
+				//html = data.uploaded_images[0].url;
+			} else {
+				html = "К сожалению, рисунки не были загружены<br>";
+				html += data.message;
 			}
-			//===================================================
+			$("#result").html(html);
+		}
+		//===================================================
 
 
-		}());	
-	</script>
+	}());	
+</script>
 </body>
 </html>

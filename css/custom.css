@@ -2,13 +2,37 @@ body {
 	font-family: "Arial", sans-serif;
 }
 
+#container1 {
+	margin-top: 50px;
+	text-align: center;
+	border: 1px dashed red;
+}
+
+#container2 {
+	margin-top: 50px;
+	text-align: center;
+	border: 1px dashed red;
+}
+
+.block {
+	display: inline-block;
+}
+
+
+
+#form-block {
+	height: 400px;
+	border: 1px solid red;
+	box-sizing: border-box;
+	text-align: left;
+}
+
 .dropzone {
-	width: 400px;
 	height: 400px;
 	border: 2px dashed #ccc;
 	color: #ccc;
-	text-align: center;
 	padding-top: 150px;
+	text-align: center;
 	box-sizing: border-box;
 }
 
@@ -17,3 +41,4 @@ body {
 	border-color: #000;
 	color: #000;
 }
+
