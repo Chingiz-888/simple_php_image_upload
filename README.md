@@ -9,6 +9,11 @@
 3) В html файле в начале script'а измените глобальную переменную var hostname на адрес вашего хоста
 
 
+### Протестировать работающий прототип
+
+**[working prototype](http://www.glens.me/test_images_upload)**
+
+
 ### Используется
 
 Абсолютно обычный образ Ubuntu 14.04 Server 
